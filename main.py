@@ -11,7 +11,7 @@ from train import Trainer
 from inference import Inferencer
 
 
-def main():
+def main(): 
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='SinGAN')
     parser.add_argument('command',help="'train' or 'inference'")

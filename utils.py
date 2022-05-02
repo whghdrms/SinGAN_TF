@@ -2,7 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf
 from PIL import Image
-
+import matplotlib.pyplot as plt
 
 # -----------------------------------------------------------
 #  OS
@@ -42,6 +42,22 @@ def load_image(image, image_size=None):
                                 )
     return image[tf.newaxis, ...]
 
+def load_image_npArray(image, image_size=None):
+    """Load an image from directory into a tensor shape of [1,H,W,C] and value between [0, 255]
+    image : Directory of image
+    image_size : An integer number
+    """
+    image = np.load(image).reshape(1,40,40,2)
+    image = tf.cast(image, tf.float32)
+    # image = tf.image.convert_image_dtype(image, tf.float32)   # to [0, 1]
+
+    if image_size:
+        image = tf.image.resize(image, (image_size, image_size),
+                                method=tf.image.ResizeMethod.BILINEAR,
+                                antialias=True,
+                                preserve_aspect_ratio=True
+                                )
+    return image[tf.newaxis, ...]
 
 def imresize(image, min_size=0, scale_factor=None, new_shapes=None):
     """ Expect input shapes [B, H, W, C] """
@@ -66,12 +82,18 @@ def imresize(image, min_size=0, scale_factor=None, new_shapes=None):
 
 def imsave(image, path):
     """ Expected input values [-1, 1] """
-    image = denormalize_m11(image)
-    image = clip_0_255(image)
-    image = Image.fromarray(np.array(image).astype(np.uint8).squeeze())
-    image.save(path)
-
-
+    image = denormalize_2D(image)
+    # image = clip_0_255(image)
+    # image = Image.fromarray(np.array(image).astype(np.uint8).squeeze())
+    # image.save(path)
+    for i in range(image[0]):
+        plt.imshow(image[i,:,:,0])
+        plt.savefig(path+f'Por_{i}.png')
+        plt.close()
+        plt.imshow(image[i,:,:,1])
+        plt.savefig(path+f'_Facies{i}.png')
+        plt.close()
+    
 # -----------------------------------------------------------
 #  Processing
 # -----------------------------------------------------------
@@ -88,6 +110,19 @@ def normalize_m11(x):
 def denormalize_m11(x):
     """ Inverse of normalize_m11 """
     return (x + 1) * 127.5
+
+
+def normalize_2D(x):
+    """ Normalizes RGB images to [-1, 1] """
+    x[:,:,:,0] = (x[:,:,:,0]/0.28 - 0.5) * 2
+    x[:,:,:,1] = (x[:,:,:,1] - 0.5) * 2
+    return x  
+
+def denormalize_2D(x):
+    """ Inverse of normalize_m11 """
+    x[:,:,:,0] = (x[:,:,:,0]+1)/2*0.28
+    x[:,:,:,1] = (x[:,:,:,0]+1)/2
+    return x
 
 def clip_0_255(image):
     return tf.clip_by_value(image, clip_value_min=0.0, clip_value_max=255.0)

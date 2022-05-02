@@ -7,7 +7,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.schedules import ExponentialDecay
 
 from model import Generator, Discriminator
-from utils import normalize_m11, load_image, imresize, create_dir
+from utils import normalize_m11, load_image, imresize, create_dir, load_image_npArray,normalize_2D
 
 
 class Trainer:
@@ -75,8 +75,10 @@ class Trainer:
 
     def train(self, training_image):
         """ Training """
-        real_image = load_image(training_image, image_size=self.max_size)
-        real_image = normalize_m11(real_image)
+        # real_image = load_image(training_image, image_size=self.max_size)
+        # real_image = normalize_m11(real_image)
+        real_image = load_image_npArray(training_image, image_size=self.max_size)
+        real_image = normalize_2D(real_image)
         reals = self.create_real_pyramid(real_image)
 
         self.Z_fixed = []

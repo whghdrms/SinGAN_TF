@@ -1,3 +1,4 @@
+#! /hpc/apps/pyhpc/dist/conda/x86_64/envs/cuda-11.0/bin/python 
 """ USAGE
 python main.py train --image ./images/train/stone.png --num_scales 8
 

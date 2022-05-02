@@ -82,7 +82,7 @@ def imresize(image, min_size=0, scale_factor=None, new_shapes=None):
 
 def imsave(image, path):
     """ Expected input values [-1, 1] """
-    image = denormalize_2D(image)
+    # image = denormalize_2D(image)
     # image = clip_0_255(image)
     # image = Image.fromarray(np.array(image).astype(np.uint8).squeeze())
     # image.save(path)
@@ -91,7 +91,7 @@ def imsave(image, path):
         plt.savefig(path+f'Por_{i}.png')
         plt.close()
         plt.imshow(image[i,:,:,1])
-        plt.savefig(path+f'_Facies{i}.png')
+        plt.savefig(path+f'Facies_{i}.png')
         plt.close()
     
 # -----------------------------------------------------------
@@ -112,17 +112,17 @@ def denormalize_m11(x):
     return (x + 1) * 127.5
 
 
-def normalize_2D(x):
-    """ Normalizes RGB images to [-1, 1] """
-    x[:,:,:,0] = (x[:,:,:,0]/0.28 - 0.5) * 2
-    x[:,:,:,1] = (x[:,:,:,1] - 0.5) * 2
-    return x  
+# def normalize_2D(x):
+#     """ Normalizes RGB images to [-1, 1] """
+#     x[:,:,:,0] = (x[:,:,:,0]/0.28 - 0.5) * 2
+#     x[:,:,:,1] = (x[:,:,:,1] - 0.5) * 2
+#     return x  
 
-def denormalize_2D(x):
-    """ Inverse of normalize_m11 """
-    x[:,:,:,0] = (x[:,:,:,0]+1)/2*0.28
-    x[:,:,:,1] = (x[:,:,:,0]+1)/2
-    return x
+# def denormalize_2D(x):
+#     """ Inverse of normalize_m11 """
+#     x[:,:,:,0] = (x[:,:,:,0]+1)/2*0.28
+#     x[:,:,:,1] = (x[:,:,:,0]+1)/2
+#     return x
 
 def clip_0_255(image):
     return tf.clip_by_value(image, clip_value_min=0.0, clip_value_max=255.0)

@@ -52,7 +52,7 @@ class Generator(Model):
         self.convblock1 = ConvBlock(num_filters)
         self.convblock2 = ConvBlock(num_filters)
         self.convblock3 = ConvBlock(num_filters)
-        self.tail = Conv2D(filters=3,
+        self.tail = Conv2D(filters=2,
                            kernel_size=3,
                            strides=1,
                            padding='valid',

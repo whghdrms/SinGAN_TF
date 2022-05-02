@@ -47,7 +47,7 @@ def load_image_npArray(image, image_size=None):
     image : Directory of image
     image_size : An integer number
     """
-    image = np.load(image).reshape(1,40,40,2)
+    image = np.load(image)
     image = tf.cast(image, tf.float32)
     # image = tf.image.convert_image_dtype(image, tf.float32)   # to [0, 1]
 
@@ -70,6 +70,8 @@ def imresize(image, min_size=0, scale_factor=None, new_shapes=None):
                                 tf.cast(image.shape[1]*scale_factor, tf.int32))
         new_width = tf.maximum(min_size, 
                                tf.cast(image.shape[2]*scale_factor, tf.int32))
+    
+    print(image.shape)
 
     image = tf.image.resize(
                 image, 

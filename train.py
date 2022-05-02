@@ -7,7 +7,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.schedules import ExponentialDecay
 
 from model import Generator, Discriminator
-from utils import normalize_m11, load_image, imresize, create_dir, load_image_npArray,normalize_2D
+from utils import normalize_m11, load_image, imresize, create_dir, load_image_npArray
 
 
 class Trainer:
